@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "995708666308",
-    "project_id": "nomad-final-9220",
-    "storage_bucket": "nomad-final-9220.appspot.com"
+    "project_number": "925432021988",
+    "project_id": "final-ffda7",
+    "storage_bucket": "final-ffda7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:995708666308:android:4a03ae4e1f1348947be491",
+        "mobilesdk_app_id": "1:925432021988:android:ed1dbda9b66c8d7c617df1",
         "android_client_info": {
           "package_name": "com.example.final_project"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDKdBfc2dn9IW-PGbEyK44hFL193-5rY-g"
+          "current_key": "AIzaSyCHKJgRzvC55C63sTQwv0WV1cgEPYo7GxM"
         }
       ],
       "services": {

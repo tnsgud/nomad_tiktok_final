@@ -7,7 +7,9 @@ class SignInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: SafeArea(
-        child: Column(),
+        child: Column(
+          children: [Text('hello world')],
+        ),
       ),
     );
   }
