@@ -44,37 +44,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCsQlAicw5AxM7wmiODeHe6nYNZ32RZ3PE',
-    appId: '1:925432021988:web:79b41b2f4176701c617df1',
-    messagingSenderId: '925432021988',
-    projectId: 'final-ffda7',
-    authDomain: 'final-ffda7.firebaseapp.com',
-    storageBucket: 'final-ffda7.appspot.com',
+    apiKey: 'AIzaSyCDFa5JBK4C_7r0DaMHW0xbt6YdAxFy7L0',
+    appId: '1:995708666308:web:a27ebf2f636c6e897be491',
+    messagingSenderId: '995708666308',
+    projectId: 'nomad-final-9220',
+    authDomain: 'nomad-final-9220.firebaseapp.com',
+    storageBucket: 'nomad-final-9220.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCHKJgRzvC55C63sTQwv0WV1cgEPYo7GxM',
-    appId: '1:925432021988:android:ed1dbda9b66c8d7c617df1',
-    messagingSenderId: '925432021988',
-    projectId: 'final-ffda7',
-    storageBucket: 'final-ffda7.appspot.com',
+    apiKey: 'AIzaSyDKdBfc2dn9IW-PGbEyK44hFL193-5rY-g',
+    appId: '1:995708666308:android:4a03ae4e1f1348947be491',
+    messagingSenderId: '995708666308',
+    projectId: 'nomad-final-9220',
+    storageBucket: 'nomad-final-9220.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA4hRxmgvXUPS0LIUaxSabIrkWs8Sbj8dc',
-    appId: '1:925432021988:ios:d33a28aef6b74bb6617df1',
-    messagingSenderId: '925432021988',
-    projectId: 'final-ffda7',
-    storageBucket: 'final-ffda7.appspot.com',
+    apiKey: 'AIzaSyDVDV2vzGfn86qA8zinxzplBHY9UB9UA9E',
+    appId: '1:995708666308:ios:3b833c71e0c69af87be491',
+    messagingSenderId: '995708666308',
+    projectId: 'nomad-final-9220',
+    storageBucket: 'nomad-final-9220.appspot.com',
     iosBundleId: 'com.example.finalProject',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA4hRxmgvXUPS0LIUaxSabIrkWs8Sbj8dc',
-    appId: '1:925432021988:ios:772e1dc8bb36cb4b617df1',
-    messagingSenderId: '925432021988',
-    projectId: 'final-ffda7',
-    storageBucket: 'final-ffda7.appspot.com',
+    apiKey: 'AIzaSyDVDV2vzGfn86qA8zinxzplBHY9UB9UA9E',
+    appId: '1:995708666308:ios:3239f4b9b2e055a07be491',
+    messagingSenderId: '995708666308',
+    projectId: 'nomad-final-9220',
+    storageBucket: 'nomad-final-9220.appspot.com',
     iosBundleId: 'com.example.finalProject.RunnerTests',
   );
 }
