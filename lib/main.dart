@@ -1,4 +1,6 @@
 import 'package:final_project/firebase_options.dart';
+import 'package:final_project/model/post.dart';
+import 'package:final_project/view_model/post_view_mode.dart';
 import 'package:final_project/views/home_screen.dart';
 import 'package:final_project/views/post_screen.dart';
 import 'package:final_project/views/sign_in_screen.dart';
@@ -48,6 +50,22 @@ final router = GoRouter(
     )
   ],
 );
+
+final postProvider = StateNotifierProvider<PostViewModel, List<Post>>(
+  (ref) {
+    var viewModel = PostViewModel([]);
+
+    viewModel.getData();
+
+    return viewModel;
+  },
+);
+
+final provider = Provider<List<Post>>((ref) {
+  var posts = ref.watch(postProvider);
+
+  return posts;
+});
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

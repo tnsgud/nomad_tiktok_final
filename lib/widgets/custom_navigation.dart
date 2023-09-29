@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomNavigation extends StatefulWidget {
   const CustomNavigation({super.key});
@@ -9,8 +10,11 @@ class CustomNavigation extends StatefulWidget {
 
 class _CustomNavigationState extends State<CustomNavigation> {
   int _currentIndex = 0;
+  final List<String> _path = ['/', '/post'];
 
   void _onTap(int index) {
+    context.go(_path[index]);
+
     setState(() {
       _currentIndex = index;
     });
