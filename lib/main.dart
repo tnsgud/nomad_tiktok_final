@@ -1,14 +1,19 @@
 import 'package:final_project/firebase_options.dart';
 import 'package:final_project/views/home_screen.dart';
+import 'package:final_project/views/post_screen.dart';
 import 'package:final_project/views/sign_in_screen.dart';
 import 'package:final_project/views/sign_up_screen.dart';
+import 'package:final_project/widgets/custom_navigation.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 final router = GoRouter(
-  initialLocation: '/sign-in',
+  navigatorKey: rootNavigatorKey,
+  initialLocation: FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/',
   routes: [
     GoRoute(
       path: '/sign-in',
@@ -17,6 +22,25 @@ final router = GoRouter(
     GoRoute(
       path: '/sign-up',
       builder: (context, state) => const SignUpScreen(),
+    ),
+    ShellRoute(
+      builder: (context, state, child) {
+        return Scaffold(
+          key: state.pageKey,
+          body: SafeArea(child: child),
+          bottomNavigationBar: const CustomNavigation(),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: '/post',
+          builder: (context, state) => const PostScreen(),
+        )
+      ],
     ),
     GoRoute(
       path: '/',
@@ -42,6 +66,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Nomad Flutter Final',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
