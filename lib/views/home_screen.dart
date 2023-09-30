@@ -1,3 +1,4 @@
+import 'package:final_project/constants/sizes.dart';
 import 'package:final_project/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,21 +12,34 @@ class HomeScreen extends ConsumerWidget {
     var posts = ref.watch(provider);
 
     if (posts.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
+      return Container(
+        color: Colors.white,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     }
 
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.separated(
-            itemBuilder: (context, index) => PostCard(post: posts[index]),
-            separatorBuilder: (context, index) => const SizedBox(height: 10),
-            itemCount: posts.length,
-          ),
-        )
-      ],
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  Sizes.size20,
+                  Sizes.size20,
+                  Sizes.size20,
+                  0,
+                ),
+                child: PostCard(post: posts[index]),
+              ),
+              itemCount: posts.length,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

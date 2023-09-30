@@ -1,3 +1,4 @@
+import 'package:final_project/constants/sizes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,14 +33,20 @@ class _CustomNavigationState extends State<CustomNavigation> {
         showSelectedLabels: false,
         showUnselectedLabels: false,
         onTap: _onTap,
-        items: const [
+        items: [
           BottomNavigationBarItem(
             label: 'home',
-            icon: Icon(Icons.home),
+            icon: Icon(
+              _currentIndex == 0 ? Icons.home : Icons.home_outlined,
+              size: Sizes.size40,
+            ),
           ),
           BottomNavigationBarItem(
             label: 'post',
-            icon: Icon(Icons.edit),
+            icon: Icon(
+              _currentIndex == 1 ? Icons.edit : Icons.edit_outlined,
+              size: Sizes.size32,
+            ),
           )
         ],
       ),

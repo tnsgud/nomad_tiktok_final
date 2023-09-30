@@ -1,3 +1,4 @@
+import 'package:final_project/constants/sizes.dart';
 import 'package:final_project/firebase_options.dart';
 import 'package:final_project/model/post.dart';
 import 'package:final_project/view_model/post_view_mode.dart';
@@ -29,7 +30,11 @@ final router = GoRouter(
       builder: (context, state, child) {
         return Scaffold(
           key: state.pageKey,
-          body: SafeArea(child: child),
+          body: SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.all(Sizes.size10),
+            child: child,
+          )),
           bottomNavigationBar: const CustomNavigation(),
         );
       },
@@ -82,6 +87,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.signOut();
     return MaterialApp.router(
       title: 'Nomad Flutter Final',
       debugShowCheckedModeBanner: false,
