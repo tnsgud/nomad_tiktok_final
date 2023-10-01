@@ -18,9 +18,13 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController, _passwordController;
+  bool isWeakPassword = false, isAlreadyUsed = false;
 
   void _onSignUp() async {
     final isValidate = _formKey.currentState?.validate() ?? false;
+
+    isWeakPassword = false;
+    isAlreadyUsed = false;
 
     if (!isValidate) return;
 
@@ -37,7 +41,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var collection = FirebaseFirestore.instance.collection(user.user!.email!);
       var initPost = Post(
         content: '우리의 첫 만남!',
-        emoji: '🥳',
+        emoji: '0',
         color: '0xFFFFCF87',
         createTime: DateTime.now(),
       );
@@ -45,10 +49,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       context.go('/');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('비밀번호가 너무 간단합니다.');
+        isWeakPassword = true;
+        _formKey.currentState?.validate();
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        isAlreadyUsed = true;
+        _formKey.currentState?.validate();
+        _emailController.text = '';
       }
+      _passwordController.text = '';
     }
   }
 
@@ -79,36 +87,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomTextFormField(
-                  hintText: '이메일',
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '이메일을 입력해주세요.';
-                    }
-
-                    final reg = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-                    if (!reg.hasMatch(value)) return '올바르지 않은 이메일입니다.';
-
-                    return null;
-                  },
-                ),
-                Gaps.v10,
-                CustomTextFormField(
-                  obscureText: true,
-                  hintText: '비밀번호',
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '비밀번호를 입력해주세요.';
-                    }
-
-                    return null;
-                  },
+                Text(
+                  '회원가입',
+                  style: context.displayLarge,
                 ),
                 Gaps.v20,
+                SizedBox(
+                  height: Sizes.size96,
+                  child: CustomTextFormField(
+                    hintText: '이메일',
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '이메일을 입력해주세요.';
+                      }
+
+                      final reg = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+                      if (!reg.hasMatch(value)) return '올바르지 않은 이메일입니다.';
+
+                      if (isAlreadyUsed) return '이미 등록된 이메일입니다.';
+
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: Sizes.size96,
+                  child: CustomTextFormField(
+                    obscureText: true,
+                    hintText: '비밀번호',
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '비밀번호를 입력해주세요.';
+                      }
+
+                      if (isWeakPassword) return '비밀번호가 너무 간단합니다.';
+
+                      return null;
+                    },
+                  ),
+                ),
                 GestureDetector(
                   onTap: _onSignUp,
                   child: Container(

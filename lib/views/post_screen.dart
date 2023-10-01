@@ -18,9 +18,9 @@ class PostScreen extends ConsumerStatefulWidget {
 class _PostScreenState extends ConsumerState<PostScreen> {
   late TextEditingController _controller;
   final List<String> _emoji = [
-    '😆',
-    '😭',
-    '🤬',
+    'assets/gif/smile.gif',
+    'assets/gif/sad.gif',
+    'assets/gif/mad.gif',
   ];
   final List<String> _emojiColor = [
     '0xFFFFCF87',
@@ -92,8 +92,10 @@ class _PostScreenState extends ConsumerState<PostScreen> {
     return Container(
       color: Colors.white,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Gaps.v96,
+          Gaps.v96,
+          Gaps.v32,
           TextField(
             controller: _controller,
             decoration: const InputDecoration(
@@ -101,7 +103,8 @@ class _PostScreenState extends ConsumerState<PostScreen> {
               border: OutlineInputBorder(),
             ),
           ),
-          Gaps.v40,
+          Gaps.v96,
+          Gaps.v36,
           Stack(
             children: [
               AnimatedRotation(
@@ -109,37 +112,27 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                 duration: const Duration(milliseconds: 200),
                 child: Center(
                   child: SizedBox(
-                    width: 100,
-                    height: 100,
+                    width: 200,
+                    height: 200,
                     child: Center(
                       child: Stack(
                         children: [
                           Transform.translate(
-                            offset: const Offset(-50, 0),
+                            offset: const Offset(-150, 0),
                             child: Transform.rotate(
                               angle: -90 * math.pi / 180,
-                              child: Image.asset('assets/gif/512.gif'),
-                              // child: Text(
-                              //   _emoji[0],
-                              //   style: context.displayLarge,
-                              // ),
+                              child: Image.asset(_emoji[0]),
                             ),
                           ),
                           Transform.translate(
-                            offset: const Offset(0, -50),
-                            child: Text(
-                              _emoji[1],
-                              style: context.displayLarge,
-                            ),
+                            offset: const Offset(0, -150),
+                            child: Image.asset(_emoji[1]),
                           ),
                           Transform.translate(
-                            offset: const Offset(50, 0),
+                            offset: const Offset(150, 0),
                             child: Transform.rotate(
                               angle: 90 * math.pi / 180,
-                              child: Text(
-                                _emoji[2],
-                                style: context.displayLarge,
-                              ),
+                              child: Image.asset(_emoji[2]),
                             ),
                           ),
                         ],
@@ -149,44 +142,47 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                 ),
               ),
               Transform.translate(
-                offset: const Offset(0, 20),
+                offset: const Offset(0, 25),
                 child: Container(
                   width: double.infinity,
-                  height: 100,
+                  height: 300,
                   color: Colors.white,
-                  child: Slider(
-                    min: 0,
-                    max: 2,
-                    activeColor: Colors.black,
-                    inactiveColor: Colors.grey,
-                    divisions: 2,
-                    value: sliderValue,
-                    label: _emoji[emojiIndex],
-                    onChanged: _onSliderChange,
+                  child: Column(
+                    children: [
+                      Slider(
+                        min: 0,
+                        max: 2,
+                        activeColor: Colors.black,
+                        inactiveColor: Colors.grey,
+                        divisions: 2,
+                        value: sliderValue,
+                        onChanged: _onSliderChange,
+                      ),
+                      Gaps.v20,
+                      GestureDetector(
+                        onTap: _onAddPost,
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '기록하기',
+                              style: context.displaySmall.copyWith(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
             ],
           ),
-          Gaps.v20,
-          GestureDetector(
-            onTap: _onAddPost,
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Center(
-                child: Text(
-                  '기록하기',
-                  style: context.displaySmall.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          )
         ],
       ),
     );

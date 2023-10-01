@@ -16,9 +16,12 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController, _passwordController;
+  bool isInvalidLogin = false;
 
   void _onSignIn() async {
     final isValidate = _formKey.currentState?.validate() ?? false;
+
+    isInvalidLogin = false;
 
     if (!isValidate) return;
 
@@ -35,7 +38,10 @@ class _SignInScreenState extends State<SignInScreen> {
       context.go('/');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-        print('없는 계정입니다.');
+        isInvalidLogin = true;
+        _formKey.currentState?.validate();
+        _emailController.text = '';
+        _passwordController.text = '';
       }
     }
   }
@@ -67,36 +73,47 @@ class _SignInScreenState extends State<SignInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomTextFormField(
-                  hintText: '이메일',
-                  controller: _emailController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '이메일을 입력해주세요.';
-                    }
-
-                    final reg = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-                    if (!reg.hasMatch(value)) return '올바르지 않은 이메일입니다.';
-
-                    return null;
-                  },
-                ),
-                Gaps.v10,
-                CustomTextFormField(
-                  obscureText: true,
-                  hintText: '비밀번호',
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return '비밀번호를 입력해주세요.';
-                    }
-
-                    return null;
-                  },
+                Text(
+                  '로그인',
+                  style: context.displayLarge,
                 ),
                 Gaps.v20,
+                SizedBox(
+                  height: Sizes.size96,
+                  child: CustomTextFormField(
+                    hintText: '이메일',
+                    controller: _emailController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '이메일을 입력해주세요.';
+                      }
+
+                      final reg = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+                      if (!reg.hasMatch(value)) return '올바르지 않은 이메일입니다.';
+
+                      if (isInvalidLogin) return '존재하지 않은 계정입니다.';
+
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: Sizes.size96,
+                  child: CustomTextFormField(
+                    obscureText: true,
+                    hintText: '비밀번호',
+                    controller: _passwordController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return '비밀번호를 입력해주세요.';
+                      }
+
+                      return null;
+                    },
+                  ),
+                ),
                 GestureDetector(
                   onTap: _onSignIn,
                   child: Container(

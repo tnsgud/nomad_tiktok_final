@@ -6,13 +6,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:final_project/constants/style.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:final_project/main.dart';
 
 class PostCard extends ConsumerWidget {
   const PostCard({super.key, required this.posts});
 
   final List<Post> posts;
 
-  void _showActionSheet(BuildContext context, WidgetRef ref) {
+  void _onDelete(BuildContext context, WidgetRef ref, int index) {
+    Navigator.of(context).pop();
+
+    ref.read(postProvider.notifier).remove(posts[index]);
+  }
+
+  void _showActionSheet(BuildContext context, WidgetRef ref, int index) {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
@@ -27,8 +34,7 @@ class PostCard extends ConsumerWidget {
           ),
           actions: [
             CupertinoActionSheetAction(
-              onPressed: () {},
-              // onPressed: () => _onDelete(context, ref),
+              onPressed: () => _onDelete(context, ref, index),
               isDestructiveAction: true,
               child: Text(
                 '삭제',
@@ -71,47 +77,51 @@ class PostCard extends ConsumerWidget {
           children: posts.map((post) {
             var index = posts.indexOf(post);
 
-            return Padding(
-              padding: EdgeInsets.only(
-                bottom: index < (posts.length - 1) ? Sizes.size10 : 0,
-              ),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.size10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color(int.parse(post.color)),
+            return GestureDetector(
+              onLongPress: () => _showActionSheet(context, ref, index),
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: index < (posts.length - 1) ? Sizes.size10 : 0,
                 ),
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${post.createTime.day}',
-                          style: context.displayMedium,
-                        ),
-                        Text(
-                          post.emoji,
-                          style: context.displayMedium,
-                        )
-                      ],
-                    ),
-                    Gaps.h10,
-                    Container(
-                      width: 1,
-                      height: 92,
-                      color: Colors.black,
-                    ),
-                    Gaps.h10,
-                    Expanded(
-                      child: Text(
-                        post.content,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.size10),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color(int.parse(post.color)),
+                  ),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            post.createTime.day.toString().padLeft(2, '0'),
+                            style: context.displayMedium,
+                          ),
+                          Image.asset(
+                            post.emoji,
+                            width: 30,
+                            height: 30,
+                          ),
+                        ],
                       ),
-                    ),
-                  ],
+                      Gaps.h10,
+                      Container(
+                        width: 1,
+                        height: 92,
+                        color: Colors.black,
+                      ),
+                      Gaps.h10,
+                      Expanded(
+                        child: Text(
+                          post.content,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
