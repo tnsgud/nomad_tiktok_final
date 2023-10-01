@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:final_project/constants/gaps.dart';
 import 'package:final_project/constants/sizes.dart';
 import 'package:final_project/model/post.dart';
+import 'package:final_project/widgets/custom_text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:final_project/constants/style.dart';
 import 'package:go_router/go_router.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -35,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       var initPost = Post(
         content: '우리의 첫 만남!',
         emoji: '🥳',
-        color: '0xFFF7CE88',
+        color: '0xFFFFCF87',
         createTime: DateTime.now(),
       );
       collection.add(initPost.toMap());
@@ -74,15 +77,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
+                CustomTextFormField(
+                  hintText: '이메일',
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'email',
-                  ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return '이메일을 입력해주세요.';
+                    if (value == null || value.isEmpty) {
+                      return '이메일을 입력해주세요.';
+                    }
 
                     final reg = RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -92,26 +95,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                TextFormField(
+                Gaps.v10,
+                CustomTextFormField(
                   obscureText: true,
+                  hintText: '비밀번호',
                   controller: _passwordController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'password',
-                  ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return '비밀번호를 입력해주세요.';
+                    if (value == null || value.isEmpty) {
+                      return '비밀번호를 입력해주세요.';
+                    }
 
                     return null;
                   },
                 ),
+                Gaps.v20,
                 GestureDetector(
                   onTap: _onSignUp,
-                  child: const Text('sign up'),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: Sizes.size10,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '회원가입',
+                        style: context.displaySmall.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
+                Gaps.v32,
                 GestureDetector(
                   onTap: _onPushTap,
-                  child: const Text('sign in'),
+                  child: Center(
+                    child: Text(
+                      '사용하던 계정이 있습니까? →',
+                      style: context.bodySmall.copyWith(
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
                 )
               ],
             ),

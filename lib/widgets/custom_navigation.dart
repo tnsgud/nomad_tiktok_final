@@ -29,9 +29,11 @@ class _CustomNavigationState extends State<CustomNavigation> {
         highlightColor: Colors.transparent,
       ),
       child: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: _currentIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        selectedItemColor: Colors.black,
         onTap: _onTap,
         items: [
           BottomNavigationBarItem(

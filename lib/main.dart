@@ -92,7 +92,10 @@ class MyApp extends StatelessWidget {
       title: 'Nomad Flutter Final',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primaryColor: Colors.black,
+        colorScheme: const ColorScheme.light(
+          background: Colors.white,
+        ),
         useMaterial3: true,
       ),
       routerConfig: router,

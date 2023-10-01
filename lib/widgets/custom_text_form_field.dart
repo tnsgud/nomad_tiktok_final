@@ -20,10 +20,17 @@ class CustomTextFormField extends StatelessWidget {
       obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
-        border: OutlineInputBorder(
+        filled: true,
+        fillColor: Colors.grey.shade300,
+        hintText: hintText,
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
-        hintText: hintText,
+        border: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.grey, width: 2),
+          borderRadius: BorderRadius.circular(20),
+        ),
       ),
       validator: validator,
     );

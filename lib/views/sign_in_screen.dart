@@ -68,7 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomTextFormField(
-                  hintText: 'email',
+                  hintText: '이메일',
                   controller: _emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -86,7 +86,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Gaps.v10,
                 CustomTextFormField(
                   obscureText: true,
-                  hintText: 'password',
+                  hintText: '비밀번호',
                   controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {

@@ -1,5 +1,5 @@
+import 'dart:math' as math;
 import 'package:final_project/constants/gaps.dart';
-import 'package:final_project/constants/sizes.dart';
 import 'package:final_project/constants/style.dart';
 import 'package:final_project/main.dart';
 import 'package:final_project/model/post.dart';
@@ -19,67 +19,17 @@ class _PostScreenState extends ConsumerState<PostScreen> {
   late TextEditingController _controller;
   final List<String> _emoji = [
     '😆',
-    '😍',
-    '😊',
-    '🥳',
     '😭',
     '🤬',
-    '🫠',
-    '🤮',
   ];
   final List<String> _emojiColor = [
-    '0xFFF7CE88',
-    '0xFFF7CE88',
-    '0xFFF7CE88',
-    '0xFFF7CE88',
-    '0xFF6B78FE',
-    '0xFFFF8574',
-    '0xFFFF8574',
-    '0xFFFF8574',
+    '0xFFFFCF87',
+    '0xFF87BEFF',
+    '0xFFFFAB87',
   ];
-  final List<bool> _emojiSelect = List.filled(8, false);
-
-  Widget _emojiCard({required String emoji, required int index}) {
-    final colorCode = int.parse(_emojiColor[index]);
-    final color = _emojiSelect[index] ? Color(colorCode) : Colors.white;
-
-    return GestureDetector(
-      onTap: () => _onEmojiCardTap(index: index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: Sizes.size3,
-          horizontal: Sizes.size8,
-        ),
-        decoration: BoxDecoration(
-          color: color,
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(Sizes.size10),
-        ),
-        child: Text(
-          emoji,
-          style: context.bodyMedium,
-        ),
-      ),
-    );
-  }
-
-  void _onEmojiCardTap({required int index}) {
-    if (_emojiSelect[index]) {
-      setState(() {
-        _emojiSelect[index] = false;
-      });
-
-      return;
-    }
-
-    for (var i = 0; i < _emojiSelect.length; i++) {
-      _emojiSelect[i] = false;
-    }
-
-    setState(() {
-      _emojiSelect[index] = true;
-    });
-  }
+  double sliderValue = 0.0;
+  int emojiIndex = 0;
+  final List<double> emojiTurns = [0.25, 0, -0.25];
 
   void _onAddPost() {
     if (_controller.text.isEmpty) {
@@ -99,25 +49,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
       return;
     }
 
-    if (_emojiSelect.where((e) => e).isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: const Text('경고'),
-          content: const Text('아이콘을 선택해주세요.'),
-          actions: [
-            CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('닫기'),
-            )
-          ],
-        ),
-      );
-      return;
-    }
-
     var text = _controller.text;
-    var emojiIndex = _emojiSelect.indexOf(_emojiSelect.firstWhere((e) => e));
     var emoji = _emoji[emojiIndex];
     var color = _emojiColor[emojiIndex];
     var post = Post(
@@ -132,11 +64,15 @@ class _PostScreenState extends ConsumerState<PostScreen> {
     ref.read(postProvider.notifier).add(post);
 
     _controller.text = '';
-    for (var i = 0; i < _emojiSelect.length; i++) {
-      _emojiSelect[i] = false;
-    }
 
     setState(() {});
+  }
+
+  void _onSliderChange(double newValue) {
+    setState(() {
+      sliderValue = newValue;
+      emojiIndex = sliderValue.ceil();
+    });
   }
 
   @override
@@ -156,6 +92,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
     return Container(
       color: Colors.white,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
             controller: _controller,
@@ -164,17 +101,70 @@ class _PostScreenState extends ConsumerState<PostScreen> {
               border: OutlineInputBorder(),
             ),
           ),
-          Gaps.v20,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: _emoji
-                .map(
-                  (e) => _emojiCard(
-                    emoji: e,
-                    index: _emoji.indexOf(e),
+          Gaps.v40,
+          Stack(
+            children: [
+              AnimatedRotation(
+                turns: emojiTurns[emojiIndex],
+                duration: const Duration(milliseconds: 200),
+                child: Center(
+                  child: SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Center(
+                      child: Stack(
+                        children: [
+                          Transform.translate(
+                            offset: const Offset(-50, 0),
+                            child: Transform.rotate(
+                              angle: -90 * math.pi / 180,
+                              child: Text(
+                                _emoji[0],
+                                style: context.displayLarge,
+                              ),
+                            ),
+                          ),
+                          Transform.translate(
+                            offset: const Offset(0, -50),
+                            child: Text(
+                              _emoji[1],
+                              style: context.displayLarge,
+                            ),
+                          ),
+                          Transform.translate(
+                            offset: const Offset(50, 0),
+                            child: Transform.rotate(
+                              angle: 90 * math.pi / 180,
+                              child: Text(
+                                _emoji[2],
+                                style: context.displayLarge,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                )
-                .toList(),
+                ),
+              ),
+              Transform.translate(
+                offset: const Offset(0, 20),
+                child: Container(
+                  width: double.infinity,
+                  height: 100,
+                  color: Colors.white,
+                  child: Slider(
+                    min: 0,
+                    max: 2,
+                    activeColor: Colors.black,
+                    divisions: 2,
+                    value: sliderValue,
+                    label: _emoji[emojiIndex],
+                    onChanged: _onSliderChange,
+                  ),
+                ),
+              ),
+            ],
           ),
           Gaps.v20,
           GestureDetector(
