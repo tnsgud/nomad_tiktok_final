@@ -38,12 +38,11 @@ class HomeScreen extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(
                     Sizes.size20,
-                    Sizes.size20,
+                    0,
                     Sizes.size20,
                     0,
                   ),
                   child: PostCard(posts: entries.value),
-                  // child: PostCard(post: posts[index]),
                 );
               },
               itemCount: list.length,

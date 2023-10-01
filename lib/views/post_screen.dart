@@ -118,10 +118,11 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                             offset: const Offset(-50, 0),
                             child: Transform.rotate(
                               angle: -90 * math.pi / 180,
-                              child: Text(
-                                _emoji[0],
-                                style: context.displayLarge,
-                              ),
+                              child: Image.asset('assets/gif/512.gif'),
+                              // child: Text(
+                              //   _emoji[0],
+                              //   style: context.displayLarge,
+                              // ),
                             ),
                           ),
                           Transform.translate(
@@ -157,6 +158,7 @@ class _PostScreenState extends ConsumerState<PostScreen> {
                     min: 0,
                     max: 2,
                     activeColor: Colors.black,
+                    inactiveColor: Colors.grey,
                     divisions: 2,
                     value: sliderValue,
                     label: _emoji[emojiIndex],
